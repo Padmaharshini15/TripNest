@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TripNest | Premium Travel & Tourism Platform</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- Floating Toast Alerts -->
+  <div id="toast-container" class="toast-stack-container"></div>
+
+  <!-- Main App Layout -->
+  <div class="app-container">
+    
+    <!-- HEADER NAVBAR (Hidden on auth split screens and admin dashboards) -->
+    <header id="main-header" class="glass-header">
+      <div class="navbar-content">
+        <a href="#" class="logo" onclick="appRouter.navigate('landing')">
+          <i class="fa-solid fa-compass"></i> Trip<span>Nest</span>
+        </a>
+        <nav>
+          <ul class="nav-links" id="nav-links-list">
+            <li><a href="#" class="nav-link active" onclick="appRouter.navigate('landing')">Home</a></li>
+            <li><a href="#" class="nav-link" onclick="appRouter.navigate('listing')">Destinations</a></li>
+            <li class="user-only" style="display: none;"><a href="#" class="nav-link" onclick="appRouter.navigate('dashboard')">My Dashboard</a></li>
+            <li class="user-only" style="display: none;"><a href="#" class="nav-link" onclick="appRouter.navigate('wishlist')">Wishlist</a></li>
+            <li class="user-only" style="display: none;"><a href="#" class="nav-link" onclick="appRouter.navigate('history')">Bookings</a></li>
+          </ul>
+        </nav>
+        <div class="nav-auth" id="header-auth-actions">
+          <button class="btn btn-ghost btn-sm" onclick="appRouter.navigate('login')">Sign In</button>
+          <button class="btn btn-primary btn-sm" onclick="appRouter.navigate('register')">Register</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN VIEWPORTS -->
+    <main>
+
+      <!-- 1. LANDING PAGE VIEW -->
+      <section id="view-landing" class="app-view">
+        <div class="hero-section">
+          <div class="section-container hero-grid">
+            <div class="hero-content">
+              <span class="hero-tagline"><i class="fa-solid fa-sparkles"></i> The Next Generation Travel Platform</span>
+              <h1 class="hero-title">Discover the World's <span>Hidden Gems</span></h1>
+              <p class="hero-desc">Experience boutique travel destinations, curated local itineraries, and effortless glassmorphic booking features. Explore the world with premium luxury accommodations designed for modern adventurers.</p>
+              
+              <!-- Landing Search Widget -->
+              <div class="hero-search-container">
+                <div class="search-widget">
+                  <div class="search-input-field">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="landing-search-input" placeholder="Search by destination, category, or city...">
+                  </div>
+                  <button class="btn btn-secondary" onclick="executeLandingSearch()">Explore Now</button>
+                </div>
+              </div>
+            </div>
+            <div class="hero-image-stack">
+              <div class="main-hero-card">
+                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=800" alt="Exotic Coastline">
+              </div>
+              <div class="floating-badge-travel glass-panel">
+                <i class="fa-solid fa-award"></i>
+                <div>
+                  <h4>Award Winner</h4>
+                  <p>Startup Travel Portal 2026</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Section -->
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Featured Packages</span>
+            <h2 class="section-title">Escape the Ordinary</h2>
+            <p class="section-subtitle">Handpicked luxury destinations with verified local guides, activities, and customizable private itineraries.</p>
+          </div>
+          <div class="destinations-grid" id="landing-featured-grid">
+            <!-- Rendered Dynamically via JS -->
+          </div>
+          <div style="text-align: center; margin-top: 3.5rem;">
+            <button class="btn btn-outline" onclick="appRouter.navigate('listing')">Browse All Destinations <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="section-container">
+          <div class="stats-section">
+            <div class="stats-grid">
+              <div>
+                <div class="stat-number">12k+</div>
+                <div class="stat-label">Happy Explorers</div>
+              </div>
+              <div>
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Luxury Retreats</div>
+              </div>
+              <div>
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label">Average Review</div>
+              </div>
+              <div>
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Conciérge Support</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Guest Experiences</span>
+            <h2 class="section-title">What Our Guests Say</h2>
+            <p class="section-subtitle">Read feedback and stories from premium TripNest members who traveled the globe with us.</p>
+          </div>
+          <div class="testimonials-grid">
+            <div class="testimonial-card glass-panel">
+              <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p class="testimonial-quote">"TripNest changed how we travel. The overwater bungalow in Bora Bora was pristine, and booking took less than two minutes. The payment process was completely transparent."</p>
+              <div class="testimonial-author">
+                <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="User">
+                <div>
+                  <h4 class="testimonial-name">Clarissa Vance</h4>
+                  <p class="testimonial-role">Adventure Blogger</p>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card glass-panel">
+              <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p class="testimonial-quote">"The hiking tour in Zermatt was incredible. Our guide was local, the fireplace was lit when we arrived, and the heated pools after skiing were otherworldly. 5 stars."</p>
+              <div class="testimonial-author">
+                <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="User">
+                <div>
+                  <h4 class="testimonial-name">Marcus Broadus</h4>
+                  <p class="testimonial-role">Executive Traveller</p>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card glass-panel">
+              <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-4"></i></div>
+              <p class="testimonial-quote">"Highly organized. Being able to access customer service 24/7 during our Kyoto tour gave us absolute peace of mind. Will book all our annual family travels here."</p>
+              <div class="testimonial-author">
+                <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="User">
+                <div>
+                  <h4 class="testimonial-name">Elena Rostova</h4>
+                  <p class="testimonial-role">Product Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action Banner -->
+        <div class="section-container">
+          <div class="cta-banner">
+            <h2 class="cta-title">Ready to Design Your Next Escape?</h2>
+            <p class="cta-desc">Join TripNest today. Save up to 20% on booking fees and unlock private VIP lounge entry on your next vacation.</p>
+            <button class="btn btn-accent" onclick="appRouter.navigate('register')">Get Started Now</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. REGISTER PAGE VIEW -->
+      <section id="view-register" class="app-view" style="display: none;">
+        <div class="split-screen-container">
+          <div class="split-illustration-panel">
+            <a href="#" class="split-logo" onclick="appRouter.navigate('landing')">
+              <i class="fa-solid fa-compass"></i> Trip<span>Nest</span>
+            </a>
+            <div class="split-ill-content">
+              <h2 class="split-ill-title">Begin Your Journey With Us</h2>
+              <p class="split-ill-desc">Unlock premium member benefits, save favorite spots to custom boards, and manage your tickets in a beautiful unified portal.</p>
+            </div>
+            <div class="split-ill-footer">© 2026 TripNest Inc. All rights reserved.</div>
+          </div>
+          <div class="split-form-panel">
+            <div class="auth-card">
+              <div class="auth-header">
+                <h2 class="auth-title">Register</h2>
+                <p class="auth-subtitle">Create a premium account to start booking</p>
+              </div>
+              <form id="register-form" onsubmit="executeRegister(event)">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-user input-icon"></i>
+                    <input type="text" id="register-name" class="form-input" placeholder="John Doe" required>
+                  </div>
+                  <div class="invalid-feedback" id="reg-name-err">Name must be at least 3 characters.</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="register-email" class="form-input" placeholder="john@gmail.com" required>
+                  </div>
+                  <div class="invalid-feedback" id="reg-email-err">Please enter a valid email address.</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-phone input-icon"></i>
+                    <input type="tel" id="register-phone" class="form-input" placeholder="+1234567890" required>
+                  </div>
+                  <div class="invalid-feedback" id="reg-phone-err">Please enter a valid phone number.</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="register-password" class="form-input" placeholder="••••••••" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="togglePasswordVisibility('register-password')"></i>
+                  </div>
+                  <div class="invalid-feedback" id="reg-pass-err">Password must be at least 6 characters.</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock-keyhole input-icon"></i>
+                    <input type="password" id="register-confirm-password" class="form-input" placeholder="••••••••" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="togglePasswordVisibility('register-confirm-password')"></i>
+                  </div>
+                  <div class="invalid-feedback" id="reg-confpass-err">Passwords do not match.</div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-light);">
+                  Already have an account? <a href="#" class="auth-link" onclick="appRouter.navigate('login')">Log In</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. LOGIN PAGE VIEW -->
+      <section id="view-login" class="app-view" style="display: none;">
+        <div class="split-screen-container">
+          <div class="split-illustration-panel">
+            <a href="#" class="split-logo" onclick="appRouter.navigate('landing')">
+              <i class="fa-solid fa-compass"></i> Trip<span>Nest</span>
+            </a>
+            <div class="split-ill-content">
+              <h2 class="split-ill-title">Welcome Back, Traveler</h2>
+              <p class="split-ill-desc">Log in to view upcoming schedules, check active spots on your wishlist, and custom-design itineraries.</p>
+            </div>
+            <div class="split-ill-footer">© 2026 TripNest Inc. All rights reserved.</div>
+          </div>
+          <div class="split-form-panel">
+            <div class="auth-card">
+              <div class="auth-header">
+                <h2 class="auth-title">Login</h2>
+                <p class="auth-subtitle">Access your premium travel dashboard</p>
+              </div>
+              <form id="login-form" onsubmit="executeLogin(event)">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="login-email" class="form-input" placeholder="john@gmail.com" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="togglePasswordVisibility('login-password')"></i>
+                  </div>
+                </div>
+                <div class="auth-options">
+                  <label class="auth-checkbox">
+                    <input type="checkbox"> Remember Me
+                  </label>
+                  <a href="#" class="auth-link" onclick="triggerForgotPassword()">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Log In</button>
+                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-light); display: flex; flex-direction: column; gap: 0.5rem;">
+                  <div>Don't have an account? <a href="#" class="auth-link" onclick="appRouter.navigate('register')">Register</a></div>
+                  <div style="font-size: 0.8rem; margin-top: 0.5rem;"><a href="#" class="auth-link" onclick="appRouter.navigate('admin-login')"><i class="fa-solid fa-lock-keyhole"></i> Admin Login</a></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. ADMIN LOGIN PAGE VIEW -->
+      <section id="view-admin-login" class="app-view" style="display: none;">
+        <div class="split-screen-container">
+          <div class="split-illustration-panel">
+            <a href="#" class="split-logo" onclick="appRouter.navigate('landing')">
+              <i class="fa-solid fa-compass"></i> Trip<span>Nest</span>
+            </a>
+            <div class="split-ill-content">
+              <h2 class="split-ill-title">Administrative Portal</h2>
+              <p class="split-ill-desc">Manage destination nodes, approve/cancel user packages, view analytics, and check performance parameters.</p>
+            </div>
+            <div class="split-ill-footer">© 2026 TripNest Inc. Portal v2.0</div>
+          </div>
+          <div class="split-form-panel">
+            <div class="auth-card">
+              <div class="auth-header">
+                <h2 class="auth-title">Admin Login</h2>
+                <p class="auth-subtitle">Elevated authentication required</p>
+              </div>
+              <form id="admin-login-form" onsubmit="executeAdminLogin(event)">
+                <div class="form-group">
+                  <label class="form-label">Admin Email</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="admin-login-email" class="form-input" placeholder="admin@tripnest.com" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="admin-login-password" class="form-input" placeholder="••••••••" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="togglePasswordVisibility('admin-login-password')"></i>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Authenticate</button>
+                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-light);">
+                  Are you a customer? <a href="#" class="auth-link" onclick="appRouter.navigate('login')">Return to Login</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. USER DASHBOARD VIEW -->
+      <section id="view-dashboard" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="welcome-banner">
+            <div class="welcome-text">
+              <h1 id="dashboard-welcome-name">Hello, Traveler!</h1>
+              <p>Ready to customize another travel escape? Browse category channels and find the perfect package.</p>
+            </div>
+          </div>
+
+          <!-- Dynamic Statistics Widget -->
+          <div class="stats-cards-grid">
+            <div class="mini-stat-card">
+              <div class="mini-stat-icon-box"><i class="fa-regular fa-ticket"></i></div>
+              <div class="mini-stat-info">
+                <h3 id="dash-stat-bookings">0</h3>
+                <p>Total Bookings</p>
+              </div>
+            </div>
+            <div class="mini-stat-card">
+              <div class="mini-stat-icon-box accent-box"><i class="fa-regular fa-heart"></i></div>
+              <div class="mini-stat-info">
+                <h3 id="dash-stat-wishlist">0</h3>
+                <p>Saved Favorites</p>
+              </div>
+            </div>
+            <div class="mini-stat-card">
+              <div class="mini-stat-icon-box info-box"><i class="fa-regular fa-star"></i></div>
+              <div class="mini-stat-info">
+                <h3 id="dash-stat-reviews">0</h3>
+                <p>Written Reviews</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Widget -->
+          <div class="dashboard-row-header">
+            <h3 class="dashboard-row-title">Find Your Destination</h3>
+          </div>
+          <div class="search-widget" style="margin-bottom: 2.5rem; max-width: 100%;">
+            <div class="search-input-field">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="dash-search-input" placeholder="Type destination details..." onkeyup="executeDashboardFilter()">
+            </div>
+            <select class="admin-select-input" id="dash-category-select" onchange="executeDashboardFilter()" style="border: none; padding: 0.5rem 1rem;">
+              <option value="ALL">All Categories</option>
+              <option value="Beach">Beach</option>
+              <option value="Mountain">Mountain</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Historic">Historic</option>
+              <option value="City">City</option>
+            </select>
+          </div>
+
+          <!-- Category Chips -->
+          <div class="category-chips-row">
+            <button class="category-chip active" data-category="ALL" onclick="filterDashboardByCategory(this)">All Retreats</button>
+            <button class="category-chip" data-category="Beach" onclick="filterDashboardByCategory(this)">Beach</button>
+            <button class="category-chip" data-category="Mountain" onclick="filterDashboardByCategory(this)">Mountain</button>
+            <button class="category-chip" data-category="Adventure" onclick="filterDashboardByCategory(this)">Adventure</button>
+            <button class="category-chip" data-category="Historic" onclick="filterDashboardByCategory(this)">Historic</button>
+            <button class="category-chip" data-category="City" onclick="filterDashboardByCategory(this)">City</button>
+          </div>
+
+          <!-- Destinations List -->
+          <div class="dashboard-row-header">
+            <h3 class="dashboard-row-title">Recommended for You</h3>
+          </div>
+          <div class="destinations-grid" id="dash-recommended-grid">
+            <!-- Dynamic items -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. DESTINATION LISTING VIEW -->
+      <section id="view-listing" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Expeditions</span>
+            <h2 class="section-title">All Destinations</h2>
+            <p class="section-subtitle">Sort and filter through the complete directory of premium packages offered by TripNest.</p>
+          </div>
+
+          <!-- Listing Search Filter Bar -->
+          <div class="admin-actions-bar">
+            <div class="search-filter-controls-group">
+              <div class="search-widget" style="flex-grow: 1; box-shadow: var(--shadow-sm);">
+                <div class="search-input-field">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="listing-search-input" placeholder="Search by spot name or country..." onkeyup="executeListingFilter()">
+                </div>
+              </div>
+              <select class="admin-select-input" id="listing-category-filter" onchange="executeListingFilter()">
+                <option value="ALL">All Categories</option>
+                <option value="Beach">Beach</option>
+                <option value="Mountain">Mountain</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Historic">Historic</option>
+                <option value="City">City</option>
+              </select>
+              <select class="admin-select-input" id="listing-sort-filter" onchange="executeListingFilter()">
+                <option value="popular">Most Popular</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="destinations-grid" id="listing-results-grid">
+            <!-- Dynamic Items -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. DESTINATION DETAILS VIEW -->
+      <section id="view-details" class="app-view" style="display: none;">
+        <div class="section-container">
+          
+          <button class="btn btn-ghost" onclick="goBackToExploration()" style="margin-bottom: 2rem; padding-left: 0;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Exploration
+          </button>
+
+          <!-- Detail Page Layout Grid -->
+          <div class="details-grid" id="details-content-container">
+            <!-- Dynamic contents injection -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. BOOKING PAGE VIEW (STEP WIZARD) -->
+      <section id="view-booking" class="app-view" style="display: none;">
+        <div class="section-container booking-steps-wrapper">
+          <div class="booking-wizard-header">
+            <div class="booking-wizard-progress-bar" id="wizard-progress-bar"></div>
+            <div class="wizard-step-node active" id="node-step-1">
+              <div class="wizard-step-circle">1</div>
+              <span class="wizard-step-label">Select Date</span>
+            </div>
+            <div class="wizard-step-node" id="node-step-2">
+              <div class="wizard-step-circle">2</div>
+              <span class="wizard-step-label">Travelers</span>
+            </div>
+            <div class="wizard-step-node" id="node-step-3">
+              <div class="wizard-step-circle">3</div>
+              <span class="wizard-step-label">Summary</span>
+            </div>
+            <div class="wizard-step-node" id="node-step-4">
+              <div class="wizard-step-circle">4</div>
+              <span class="wizard-step-label">Confirm</span>
+            </div>
+          </div>
+
+          <!-- Wizard Body panel -->
+          <div class="wizard-body-panel" id="wizard-step-content">
+            <!-- Steps are injected here dynamic -->
+          </div>
+
+          <!-- Wizard Footer Controls -->
+          <div class="wizard-footer-nav">
+            <button class="btn btn-outline" id="wizard-back-btn" onclick="wizardPrevStep()" style="display: none;">
+              <i class="fa-solid fa-chevron-left"></i> Back
+            </button>
+            <div style="flex-grow: 1;"></div>
+            <button class="btn btn-primary" id="wizard-next-btn" onclick="wizardNextStep()">
+              Continue <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. BOOKING SUCCESS VIEW -->
+      <section id="view-success" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="success-card-panel glass-panel">
+            <div class="success-illustration-box">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h1 class="success-title">Booking Confirmed!</h1>
+            <p class="success-msg-desc">Your premium itinerary has been saved. A reservation email containing airport shuttle details has been sent to your registered address.</p>
+            
+            <div class="booking-invoice-summary-box" id="success-invoice-box">
+              <!-- Dynamically render receipt -->
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+              <button class="btn btn-secondary" onclick="printReceipt()"><i class="fa-solid fa-file-pdf"></i> Download Receipt</button>
+              <button class="btn btn-primary" onclick="appRouter.navigate('dashboard')">Back to Dashboard</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. BOOKING HISTORY VIEW -->
+      <section id="view-history" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Timeline</span>
+            <h2 class="section-title">Your Booking History</h2>
+            <p class="section-subtitle">Access your boarding passes, download receipts, or manage changes for all registered expeditions.</p>
+          </div>
+          <div class="tickets-list-stack" id="history-tickets-stack">
+            <!-- Tickets are dynamically loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. PROFILE PAGE VIEW -->
+      <section id="view-profile" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="profile-layout-grid">
+            <div class="profile-meta-sidebar">
+              <div class="profile-avatar-circle" id="profile-avatar">U</div>
+              <h3 class="profile-full-name" id="profile-card-name">User Name</h3>
+              <p class="profile-user-role" id="profile-card-role">Premium Member</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem;">
+                <button class="btn btn-outline btn-sm" onclick="appRouter.navigate('dashboard')">Dashboard</button>
+                <button class="btn btn-ghost btn-sm" onclick="logoutUser()" style="color: #EF4444;"><i class="fa-solid fa-power-off"></i> Log Out</button>
+              </div>
+            </div>
+
+            <div class="profile-details-main-panel">
+              <div class="profile-tabs-header">
+                <button class="profile-tab-btn active" id="profile-tab-info" onclick="switchProfileTab('info')">Account Information</button>
+                <button class="profile-tab-btn" id="profile-tab-password" onclick="switchProfileTab('password')">Change Password</button>
+              </div>
+
+              <!-- Tab content 1: Account Info -->
+              <form id="profile-info-form" onsubmit="executeProfileUpdate(event)">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-user input-icon"></i>
+                    <input type="text" id="profile-input-name" class="form-input" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="profile-input-email" class="form-input" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-phone input-icon"></i>
+                    <input type="text" id="profile-input-phone" class="form-input" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+              </form>
+
+              <!-- Tab content 2: Security settings -->
+              <form id="profile-password-form" onsubmit="executePasswordChange(event)" style="display: none;">
+                <div class="form-group">
+                  <label class="form-label">Current Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="profile-password-current" class="form-input" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">New Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="profile-password-new" class="form-input" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm New Password</label>
+                  <div class="input-wrapper">
+                    <i class="fa-regular fa-lock input-icon"></i>
+                    <input type="password" id="profile-password-confirm" class="form-input" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-secondary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. WISHLIST VIEW -->
+      <section id="view-wishlist" class="app-view" style="display: none;">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Favorites</span>
+            <h2 class="section-title">My Travel Wishlist</h2>
+            <p class="section-subtitle">Keep track of your dream vacations. Book directly or remove them from your board anytime.</p>
+          </div>
+          <div class="destinations-grid" id="wishlist-results-grid">
+            <!-- Loaded Dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ADMIN DASHBOARD WRAPPERS -->
+      <!-- 13. ADMIN ANALYTICS DASHBOARD -->
+      <section id="view-admin-dashboard" class="app-view" style="display: none;">
+        <div class="admin-layout-wrapper">
+          
+          <!-- Left Sidebar Menu -->
+          <div class="admin-sidebar">
+            <div>
+              <div class="admin-sidebar-logo"><i class="fa-solid fa-compass"></i> Trip<span>Nest</span></div>
+              <ul class="admin-menu-list">
+                <li><a href="#" class="admin-menu-link active" onclick="appRouter.navigate('admin-dashboard')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-spots')"><i class="fa-solid fa-map-pin"></i> Manage Spots</a></li>
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-bookings')"><i class="fa-solid fa-file-invoice-dollar"></i> Bookings Queue</a></li>
+              </ul>
+            </div>
+            <div>
+              <button class="btn btn-outline btn-sm" onclick="logoutAdmin()" style="width: 100%; border-color: rgba(255,255,255,0.2); color: white;">
+                <i class="fa-solid fa-power-off"></i> Exit Console
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Viewport content -->
+          <div class="admin-main-viewport">
+            <h2>Analytics Overview</h2>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Real-time metrics, revenue indicators, and tourist registrations.</p>
+
+            <div class="admin-stats-row">
+              <div class="admin-stats-card">
+                <div>
+                  <div class="admin-stats-number" id="adm-metric-users">0</div>
+                  <div class="admin-stats-label">Total Users</div>
+                </div>
+                <div class="admin-stats-icon"><i class="fa-solid fa-users"></i></div>
+              </div>
+              <div class="admin-stats-card">
+                <div>
+                  <div class="admin-stats-number" id="adm-metric-bookings">0</div>
+                  <div class="admin-stats-label">Total Bookings</div>
+                </div>
+                <div class="admin-stats-icon" style="background: rgba(59, 130, 246, 0.08); color: #3B82F6;"><i class="fa-solid fa-ticket"></i></div>
+              </div>
+              <div class="admin-stats-card">
+                <div>
+                  <div class="admin-stats-number" id="adm-metric-revenue">₹0</div>
+                  <div class="admin-stats-label">Total Revenue</div>
+                </div>
+                <div class="admin-stats-icon" style="background: rgba(16, 185, 129, 0.08); color: #10B981;"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+              </div>
+              <div class="admin-stats-card">
+                <div>
+                  <div class="admin-stats-number" id="adm-metric-spots">0</div>
+                  <div class="admin-stats-label">Active Spots</div>
+                </div>
+                <div class="admin-stats-icon" style="background: rgba(245, 158, 11, 0.08); color: var(--accent);"><i class="fa-solid fa-earth-americas"></i></div>
+              </div>
+            </div>
+
+            <!-- Charts and Tables -->
+            <div class="admin-charts-grid">
+              <div class="admin-chart-box-panel">
+                <div class="admin-chart-box-title">Revenue Trends (Recent Months)</div>
+                <!-- Custom CSS bar chart -->
+                <div class="bar-chart-visualization" id="revenue-bar-chart">
+                  <div class="bar-column-wrap">
+                    <div class="bar-chart-pillar" data-value="₹34.2k" style="height: 60%;"></div>
+                    <span class="bar-label-caption">Mar</span>
+                  </div>
+                  <div class="bar-column-wrap">
+                    <div class="bar-chart-pillar" data-value="₹48.1k" style="height: 75%;"></div>
+                    <span class="bar-label-caption">Apr</span>
+                  </div>
+                  <div class="bar-column-wrap">
+                    <div class="bar-chart-pillar" data-value="₹65.0k" style="height: 90%;"></div>
+                    <span class="bar-label-caption">May</span>
+                  </div>
+                  <div class="bar-column-wrap">
+                    <div class="bar-chart-pillar" data-value="₹92.4k" style="height: 100%;"></div>
+                    <span class="bar-label-caption">Jun (Peak)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="admin-chart-box-panel">
+                <div class="admin-chart-box-title">Recent Users</div>
+                <div class="admin-table-container">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                      </tr>
+                    </thead>
+                    <tbody id="admin-recent-users-tbody">
+                      <!-- Rendered via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Latest Bookings Table -->
+            <div class="admin-chart-box-panel" style="margin-bottom: 2rem;">
+              <div class="admin-chart-box-title">Latest Booking Transactions</div>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Guest</th>
+                      <th>Spot</th>
+                      <th>Travel Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-latest-bookings-tbody">
+                    <!-- Rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 14. ADMIN MANAGE TOURIST SPOTS -->
+      <section id="view-admin-spots" class="app-view" style="display: none;">
+        <div class="admin-layout-wrapper">
+          
+          <!-- Left Sidebar Menu -->
+          <div class="admin-sidebar">
+            <div>
+              <div class="admin-sidebar-logo"><i class="fa-solid fa-compass"></i> Trip<span>Nest</span></div>
+              <ul class="admin-menu-list">
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-dashboard')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" class="admin-menu-link active" onclick="appRouter.navigate('admin-spots')"><i class="fa-solid fa-map-pin"></i> Manage Spots</a></li>
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-bookings')"><i class="fa-solid fa-file-invoice-dollar"></i> Bookings Queue</a></li>
+              </ul>
+            </div>
+            <div>
+              <button class="btn btn-outline btn-sm" onclick="logoutAdmin()" style="width: 100%; border-color: rgba(255,255,255,0.2); color: white;">
+                <i class="fa-solid fa-power-off"></i> Exit Console
+              </button>
+            </div>
+          </div>
+
+          <!-- Viewport -->
+          <div class="admin-main-viewport">
+            <div class="admin-actions-bar" style="margin-bottom: 3rem;">
+              <div>
+                <h2>Manage Tourist Spots</h2>
+                <p style="color: var(--text-light);">Create, update, or deprecate tourist spots.</p>
+              </div>
+              <button class="btn btn-primary" onclick="openCreateSpotModal()"><i class="fa-solid fa-plus"></i> Add New Spot</button>
+            </div>
+
+            <!-- Spots CRUD Table -->
+            <div class="admin-chart-box-panel">
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>Location</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th>Duration</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-spots-tbody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 15. ADMIN MANAGE BOOKINGS -->
+      <section id="view-admin-bookings" class="app-view" style="display: none;">
+        <div class="admin-layout-wrapper">
+          
+          <!-- Left Sidebar Menu -->
+          <div class="admin-sidebar">
+            <div>
+              <div class="admin-sidebar-logo"><i class="fa-solid fa-compass"></i> Trip<span>Nest</span></div>
+              <ul class="admin-menu-list">
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-dashboard')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" class="admin-menu-link" onclick="appRouter.navigate('admin-spots')"><i class="fa-solid fa-map-pin"></i> Manage Spots</a></li>
+                <li><a href="#" class="admin-menu-link active" onclick="appRouter.navigate('admin-bookings')"><i class="fa-solid fa-file-invoice-dollar"></i> Bookings Queue</a></li>
+              </ul>
+            </div>
+            <div>
+              <button class="btn btn-outline btn-sm" onclick="logoutAdmin()" style="width: 100%; border-color: rgba(255,255,255,0.2); color: white;">
+                <i class="fa-solid fa-power-off"></i> Exit Console
+              </button>
+            </div>
+          </div>
+
+          <!-- Viewport -->
+          <div class="admin-main-viewport">
+            <div class="admin-actions-bar" style="margin-bottom: 3rem;">
+              <div>
+                <h2>Manage Bookings Queue</h2>
+                <p style="color: var(--text-light);">Monitor guest reservation schedules, approve packages, or issue cancellations.</p>
+              </div>
+            </div>
+
+            <!-- Filter settings -->
+            <div class="admin-actions-bar" style="background: white; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); gap: 1rem;">
+              <select class="admin-select-input" id="admin-booking-status-filter" onchange="filterAdminBookings()" style="flex-grow: 1;">
+                <option value="ALL">All Statuses</option>
+                <option value="PENDING">Pending Approval</option>
+                <option value="APPROVED">Approved</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
+              </select>
+            </div>
+
+            <!-- Bookings List Table -->
+            <div class="admin-chart-box-panel" style="margin-top: 1.5rem;">
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Guest User</th>
+                      <th>Spot Title</th>
+                      <th>Travel Date</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-bookings-queue-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 16. GENERIC INFO PAGE VIEW FOR FOOTER LINKS -->
+      <section id="view-info" class="app-view" style="display: none;">
+        <div class="section-container" style="max-width: 800px; padding: 4rem 1.5rem;">
+          <div class="section-header" style="text-align: left; margin-bottom: 2.5rem;">
+            <span class="section-tag" id="info-page-tag">Travel Guide</span>
+            <h2 class="section-title" id="info-page-title">Page Title</h2>
+            <p class="section-subtitle" id="info-page-subtitle" style="margin: 0; max-width: 100%; text-align: left;">Page subtitle details.</p>
+          </div>
+          <div class="glass-panel" style="padding: 2.5rem; margin-bottom: 2.5rem; background: #fff;" id="info-page-content">
+            <!-- Dynamic Content Injected via JS -->
+          </div>
+          <div style="text-align: left;">
+            <button class="btn btn-primary" onclick="appRouter.navigate('landing')"><i class="fa-solid fa-house"></i> Back to Home</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer id="main-footer" class="main-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3><i class="fa-solid fa-compass"></i> Trip<span>Nest</span></h3>
+          <p>Elevating boutique global experiences through premium cloud software. Design travel boards, book slots, and enjoy 5-star local accommodations.</p>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com" target="_blank" class="footer-social-btn"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com" target="_blank" class="footer-social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.linkedin.com" target="_blank" class="footer-social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="appRouter.navigate('listing', { reset: true })">All Destinations</a></li>
+            <li><a href="#" onclick="appRouter.navigate('listing', { sort: 'popular', reset: true })">Popular Hotspots</a></li>
+            <li><a href="#" onclick="appRouter.navigate('landing', { scrollTo: 'featured' })">Curated Packages</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Travel Guides</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="appRouter.navigate('info', { page: 'safety' })">Safety Protocols</a></li>
+            <li><a href="#" onclick="appRouter.navigate('info', { page: 'concierge' })">Airport Concierge</a></li>
+            <li><a href="#" onclick="appRouter.navigate('info', { page: 'insurance' })">Trip Insurance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Enterprise</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="appRouter.navigate('admin-login')">Admin Control Console</a></li>
+            <li><a href="#" onclick="appRouter.navigate('info', { page: 'agency' })">Agency Partnership</a></li>
+            <li><a href="#" onclick="appRouter.navigate('info', { page: 'corporate' })">Corporate Travel</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 TripNest Inc. All rights reserved. Designed for portfolios.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#" onclick="appRouter.navigate('info', { page: 'privacy' })">Privacy Policy</a>
+          <a href="#" onclick="appRouter.navigate('info', { page: 'terms' })">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="modal-overlay-bg" id="crud-spot-modal">
+    <div class="modal-window-box">
+      <div class="modal-header-bar">
+        <h3 id="modal-spot-title">Add New Tourist Spot</h3>
+        <button class="modal-close-trigger" onclick="closeSpotModal()">&times;</button>
+      </div>
+      <div class="modal-body-content">
+        <form id="spot-crud-form">
+          <input type="hidden" id="spot-id-field">
+          <div class="form-group">
+            <label class="form-label">Spot Title</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-map-location-dot input-icon"></i>
+              <input type="text" id="spot-title-field" class="form-input" placeholder="e.g. Paris Eiffel Retreat" required style="padding-left: 2.75rem;">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label">Location (Region, Country)</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-location-dot input-icon"></i>
+                <input type="text" id="spot-location-field" class="form-input" placeholder="Paris, France" required style="padding-left: 2.75rem;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="admin-select-input" id="spot-category-field" style="width: 100%; height: 45px;">
+                <option value="Beach">Beach</option>
+                <option value="Mountain">Mountain</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Historic">Historic</option>
+                <option value="City">City</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label">Price per Traveler (₹)</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-indian-rupee-sign input-icon"></i>
+                <input type="number" id="spot-price-field" class="form-input" placeholder="650" required style="padding-left: 2.75rem;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Duration String</label>
+              <div class="input-wrapper">
+                <i class="fa-regular fa-clock input-icon"></i>
+                <input type="text" id="spot-duration-field" class="form-input" placeholder="3 Days / 2 Nights" required style="padding-left: 2.75rem;">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Image URL (Unsplash/Direct link)</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-image input-icon"></i>
+              <input type="url" id="spot-image-field" class="form-input" placeholder="https://..." required style="padding-left: 2.75rem;">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label">Weather Widget Text</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-cloud-sun input-icon"></i>
+                <input type="text" id="spot-weather-field" class="form-input" placeholder="Sunny, 22°C" required style="padding-left: 2.75rem;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Facilities (Comma separated)</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-hotel input-icon"></i>
+                <input type="text" id="spot-facilities-field" class="form-input" placeholder="Free Wi-Fi, Breakfast, Spa" required style="padding-left: 2.75rem;">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Detailed Description</label>
+            <textarea id="spot-description-field" rows="4" style="width: 100%; border-radius: var(--radius-md); padding: 1rem; border: 1.5px solid #E2E8F0; background: #F8FAFC; outline: none; font-size: 0.95rem;" placeholder="Write a premium promotional pitch for this destination..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer-bar">
+        <button class="btn btn-ghost" onclick="closeSpotModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSpotCrud()">Save Spot</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

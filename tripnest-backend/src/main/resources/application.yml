@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tripnest-backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/tripnest?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
+
+tripnest:
+  jwt:
+    secret: 3cfa76e9f1a0e5c1d683a48e71b2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0
+    expirationMs: 86400000
+    header: Authorization
+    prefix: "Bearer "
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    com.tripnest: DEBUG
