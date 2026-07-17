@@ -2,6 +2,11 @@
 // TripNest Front-end Application Core - Integrated with Spring Boot Backend
 // =========================================================================
 
+// --- Backend API Base URL ---
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:8080'
+  : 'https://tripnest-backend.onrender.com';
+
 // --- Image URL Resolver Utility ---
 const resolveImageUrl = (url) => {
   const imageMap = {
@@ -310,7 +315,7 @@ window.executeRegister = async (e) => {
   if (!valid) return;
   
   try {
-    const response = await fetch('http://localhost:8080/api/auth/register', {
+    const response = await fetch(`${API_BASE}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, phone, password })
@@ -334,7 +339,7 @@ window.executeLogin = async (e) => {
   const password = document.getElementById('login-password').value;
   
   try {
-    const response = await fetch('http://localhost:8080/api/auth/login', {
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -370,7 +375,7 @@ window.executeAdminLogin = async (e) => {
   const password = document.getElementById('admin-login-password').value;
   
   try {
-    const response = await fetch('http://localhost:8080/api/auth/admin-login', {
+    const response = await fetch(`${API_BASE}/api/auth/admin-login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -479,7 +484,7 @@ window.toggleWishlistItem = async (e, spotId) => {
   }
   
   try {
-    const res = await fetch('http://localhost:8080/api/wishlist', {
+    const res = await fetch(`${API_BASE}/api/wishlist`, {
       headers: getAuthHeaders()
     });
     const wishlist = res.ok ? await res.json() : [];
@@ -487,7 +492,7 @@ window.toggleWishlistItem = async (e, spotId) => {
     
     let response;
     if (isWishlisted) {
-      response = await fetch(`http://localhost:8080/api/wishlist/${spotId}`, {
+      response = await fetch(`${API_BASE}/api/wishlist/${spotId}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -495,7 +500,7 @@ window.toggleWishlistItem = async (e, spotId) => {
         window.toast.show('Destination removed from wishlist.', 'info');
       }
     } else {
-      response = await fetch(`http://localhost:8080/api/wishlist/${spotId}`, {
+      response = await fetch(`${API_BASE}/api/wishlist/${spotId}`, {
         method: 'POST',
         headers: getAuthHeaders()
       });
@@ -514,13 +519,13 @@ window.toggleWishlistItem = async (e, spotId) => {
 // 1. Landing View Loader
 const loadLandingData = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/spots/public');
+    const response = await fetch(`${API_BASE}/api/spots/public`);
     const spots = await response.json();
     
     const user = sessionStore.getCurrentUser();
     let wishlist = [];
     if (user) {
-      const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+      const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
         headers: getAuthHeaders()
       });
       if (wishRes.ok) wishlist = await wishRes.json();
@@ -572,12 +577,12 @@ const loadDashboardData = async () => {
   }
   
   try {
-    const bookingsRes = await fetch('http://localhost:8080/api/bookings/my', {
+    const bookingsRes = await fetch(`${API_BASE}/api/bookings/my`, {
       headers: getAuthHeaders()
     });
     const bookings = bookingsRes.ok ? await bookingsRes.json() : [];
     
-    const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+    const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
       headers: getAuthHeaders()
     });
     const wishlist = wishRes.ok ? await wishRes.json() : [];
@@ -594,13 +599,13 @@ const loadDashboardData = async () => {
 
 const renderDashboardRecommended = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/spots/public');
+    const response = await fetch(`${API_BASE}/api/spots/public`);
     const spots = await response.json();
     
     const user = sessionStore.getCurrentUser();
     let wishlist = [];
     if (user) {
-      const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+      const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
         headers: getAuthHeaders()
       });
       if (wishRes.ok) wishlist = await wishRes.json();
@@ -663,13 +668,13 @@ window.executeDashboardFilter = async () => {
   const categoryVal = document.querySelector('.category-chip.active').getAttribute('data-category');
   
   try {
-    const response = await fetch('http://localhost:8080/api/spots/public');
+    const response = await fetch(`${API_BASE}/api/spots/public`);
     const spots = await response.json();
     
     const user = sessionStore.getCurrentUser();
     let wishlist = [];
     if (user) {
-      const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+      const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
         headers: getAuthHeaders()
       });
       if (wishRes.ok) wishlist = await wishRes.json();
@@ -719,13 +724,13 @@ window.executeListingFilter = async () => {
   const sort = document.getElementById('listing-sort-filter').value;
   
   try {
-    const response = await fetch('http://localhost:8080/api/spots/public');
+    const response = await fetch(`${API_BASE}/api/spots/public`);
     let spots = await response.json();
     
     const user = sessionStore.getCurrentUser();
     let wishlist = [];
     if (user) {
-      const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+      const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
         headers: getAuthHeaders()
       });
       if (wishRes.ok) wishlist = await wishRes.json();
@@ -762,7 +767,7 @@ window.executeListingFilter = async () => {
 // 4. Details View Loader
 const loadDetailsData = async (spotId) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/spots/public/${spotId}`);
+    const response = await fetch(`${API_BASE}/api/spots/public/${spotId}`);
     if (!response.ok) throw new Error('Spot not found');
     const spot = await response.json();
     
@@ -772,7 +777,7 @@ const loadDetailsData = async (spotId) => {
     const user = sessionStore.getCurrentUser();
     
     // Retrieve spot reviews from backend
-    const reviewsRes = await fetch(`http://localhost:8080/api/reviews/${spot.id}`);
+    const reviewsRes = await fetch(`${API_BASE}/api/reviews/${spot.id}`);
     const reviews = reviewsRes.ok ? await reviewsRes.json() : [];
     
     const reviewsHTML = reviews.map(r => `
@@ -901,7 +906,7 @@ const executeAddReview = async (spotId, rating, comment) => {
   }
   
   try {
-    const res = await fetch('http://localhost:8080/api/reviews', {
+    const res = await fetch(`${API_BASE}/api/reviews`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({ spotId, rating, comment })
@@ -936,7 +941,7 @@ let currentBookingState = {
 
 const loadBookingStepWizard = async (spotId) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/spots/public/${spotId}`);
+    const response = await fetch(`${API_BASE}/api/spots/public/${spotId}`);
     if (!response.ok) throw new Error('Spot not found');
     const spot = await response.json();
     
@@ -989,7 +994,7 @@ const renderBookingStep = async () => {
   if (!contentPanel) return;
   
   try {
-    const spotRes = await fetch(`http://localhost:8080/api/spots/public/${currentBookingState.spotId}`);
+    const spotRes = await fetch(`${API_BASE}/api/spots/public/${currentBookingState.spotId}`);
     const spot = await spotRes.json();
     
     if (currentBookingState.step === 1) {
@@ -1125,7 +1130,7 @@ window.wizardPrevStep = () => {
 
 const executeFinalBookingConfirm = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/bookings', {
+    const response = await fetch(`${API_BASE}/api/bookings`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({
@@ -1156,14 +1161,14 @@ const executeFinalBookingConfirm = async () => {
 
 const loadSuccessData = async (bookingId) => {
   try {
-    const bookingsRes = await fetch('http://localhost:8080/api/bookings/my', {
+    const bookingsRes = await fetch(`${API_BASE}/api/bookings/my`, {
       headers: getAuthHeaders()
     });
     const bookings = bookingsRes.ok ? await bookingsRes.json() : [];
     const booking = bookings.find(b => b.bookingId === bookingId);
     if (!booking) return;
     
-    const spotRes = await fetch(`http://localhost:8080/api/spots/public/${booking.spotId}`);
+    const spotRes = await fetch(`${API_BASE}/api/spots/public/${booking.spotId}`);
     const spot = await spotRes.json();
     
     const container = document.getElementById('success-invoice-box');
@@ -1205,7 +1210,7 @@ const loadHistoryTickets = async () => {
   if (!container) return;
   
   try {
-    const bookingsRes = await fetch('http://localhost:8080/api/bookings/my', {
+    const bookingsRes = await fetch(`${API_BASE}/api/bookings/my`, {
       headers: getAuthHeaders()
     });
     const bookings = bookingsRes.ok ? await bookingsRes.json() : [];
@@ -1225,7 +1230,7 @@ const loadHistoryTickets = async () => {
     
     const ticketsHTML = [];
     for (const b of bookings) {
-      const spotRes = await fetch(`http://localhost:8080/api/spots/public/${b.spotId}`);
+      const spotRes = await fetch(`${API_BASE}/api/spots/public/${b.spotId}`);
       if (!spotRes.ok) continue;
       const spot = await spotRes.json();
       
@@ -1294,7 +1299,7 @@ window.cancelUserBooking = async (e, id) => {
   if (!confirm('Are you sure you want to cancel this departure reservation?')) return;
   
   try {
-    const res = await fetch(`http://localhost:8080/api/bookings/${id}`, {
+    const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
@@ -1320,7 +1325,7 @@ const loadWishlistGrid = async () => {
   if (!grid) return;
   
   try {
-    const wishRes = await fetch('http://localhost:8080/api/wishlist', {
+    const wishRes = await fetch(`${API_BASE}/api/wishlist`, {
       headers: getAuthHeaders()
     });
     const wishlist = wishRes.ok ? await wishRes.json() : [];
@@ -1338,7 +1343,7 @@ const loadWishlistGrid = async () => {
     
     const wishlistedSpots = [];
     for (const item of wishlist) {
-      const spotRes = await fetch(`http://localhost:8080/api/spots/public/${item.spotId}`);
+      const spotRes = await fetch(`${API_BASE}/api/spots/public/${item.spotId}`);
       if (spotRes.ok) {
         const spot = await spotRes.json();
         wishlistedSpots.push(spot);
@@ -1361,7 +1366,7 @@ const loadProfileSettings = async () => {
   if (!user) return;
   
   try {
-    const res = await fetch('http://localhost:8080/api/users/profile', {
+    const res = await fetch(`${API_BASE}/api/users/profile`, {
       headers: getAuthHeaders()
     });
     if (res.ok) {
@@ -1405,7 +1410,7 @@ window.executeProfileUpdate = async (e) => {
   const phone = document.getElementById('profile-input-phone').value;
   
   try {
-    const res = await fetch('http://localhost:8080/api/users/profile', {
+    const res = await fetch(`${API_BASE}/api/users/profile`, {
       method: 'PUT',
       headers: getAuthHeaders(),
       body: JSON.stringify({ name, phone })
@@ -1447,7 +1452,7 @@ window.executePasswordChange = async (e) => {
   }
   
   try {
-    const res = await fetch('http://localhost:8080/api/users/change-password', {
+    const res = await fetch(`${API_BASE}/api/users/change-password`, {
       method: 'PUT',
       headers: getAuthHeaders(),
       body: JSON.stringify({ oldPassword, newPassword })
@@ -1472,7 +1477,7 @@ window.executePasswordChange = async (e) => {
 
 const loadAdminDashboardData = async () => {
   try {
-    const statsRes = await fetch('http://localhost:8080/api/admin/dashboard', {
+    const statsRes = await fetch(`${API_BASE}/api/admin/dashboard`, {
       headers: getAuthHeaders()
     });
     if (!statsRes.ok) throw new Error('Unauthorized');
@@ -1483,7 +1488,7 @@ const loadAdminDashboardData = async () => {
     document.getElementById('adm-metric-revenue').innerText = `₹${formatPrice(stats.totalRevenue || 0)}`;
     document.getElementById('adm-metric-spots').innerText = stats.totalSpots || 0;
     
-    const bookingsRes = await fetch('http://localhost:8080/api/bookings/admin/all', {
+    const bookingsRes = await fetch(`${API_BASE}/api/bookings/admin/all`, {
       headers: getAuthHeaders()
     });
     const bookings = bookingsRes.ok ? await bookingsRes.json() : [];
@@ -1510,7 +1515,7 @@ const loadAdminDashboardData = async () => {
     }
     
     // Fetch and populate Recent Users
-    const usersRes = await fetch('http://localhost:8080/api/admin/dashboard/users', {
+    const usersRes = await fetch(`${API_BASE}/api/admin/dashboard/users`, {
       headers: getAuthHeaders()
     });
     const users = usersRes.ok ? await usersRes.json() : [];
@@ -1544,7 +1549,7 @@ const loadAdminDashboardData = async () => {
 // 14. Manage Spots CRUD Methods
 const loadAdminSpotsGrid = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/admin/spots/all', {
+    const res = await fetch(`${API_BASE}/api/admin/spots/all`, {
       headers: getAuthHeaders()
     });
     if (!res.ok) throw new Error('Unauthorized');
@@ -1587,7 +1592,7 @@ window.openCreateSpotModal = () => {
 
 window.openEditSpotModal = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8080/api/spots/public/${id}`);
+    const res = await fetch(`${API_BASE}/api/spots/public/${id}`);
     const spot = await res.json();
     
     document.getElementById('modal-spot-title').innerText = 'Edit Tourist Spot Details';
@@ -1642,14 +1647,14 @@ window.saveSpotCrud = async () => {
   try {
     let res;
     if (idVal) {
-      res = await fetch(`http://localhost:8080/api/admin/spots/${idVal}`, {
+      res = await fetch(`${API_BASE}/api/admin/spots/${idVal}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify(payload)
       });
       if (res.ok) window.toast.show('Tourist spot parameters updated.', 'success');
     } else {
-      res = await fetch('http://localhost:8080/api/admin/spots', {
+      res = await fetch(`${API_BASE}/api/admin/spots`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(payload)
@@ -1669,7 +1674,7 @@ window.deleteSpotCrud = async (id) => {
   if (!confirm('Are you sure you want to deprecate this tourist spot node?')) return;
   
   try {
-    const res = await fetch(`http://localhost:8080/api/admin/spots/${id}`, {
+    const res = await fetch(`${API_BASE}/api/admin/spots/${id}`, {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
@@ -1691,7 +1696,7 @@ window.filterAdminBookings = async () => {
   const filterVal = document.getElementById('admin-booking-status-filter').value;
   
   try {
-    const res = await fetch('http://localhost:8080/api/bookings/admin/all', {
+    const res = await fetch(`${API_BASE}/api/bookings/admin/all`, {
       headers: getAuthHeaders()
     });
     let bookings = await res.json();
@@ -1745,7 +1750,7 @@ window.filterAdminBookings = async () => {
 
 window.updateBookingStatus = async (id, newStatus) => {
   try {
-    const res = await fetch(`http://localhost:8080/api/bookings/admin/${id}/status?status=${newStatus}`, {
+    const res = await fetch(`${API_BASE}/api/bookings/admin/${id}/status?status=${newStatus}`, {
       method: 'PUT',
       headers: getAuthHeaders()
     });
