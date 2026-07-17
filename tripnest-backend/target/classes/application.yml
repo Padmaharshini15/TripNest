@@ -1,14 +1,14 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: tripnest-backend
 
   datasource:
-    url: jdbc:postgresql://dpg-d9d1s758nd3s73cf9ku0-a.oregon-postgres.render.com:5432/tripnest_1rya
-    username: user
-    password: Ua8aTVsG08bjGh6hijpfvP0YJhfofUF0
+    url: ${DATABASE_URL:jdbc:postgresql://dpg-d9d1s758nd3s73cf9ku0-a.oregon-postgres.render.com:5432/tripnest_1rya}
+    username: ${DATABASE_USERNAME:user}
+    password: ${DATABASE_PASSWORD:Ua8aTVsG08bjGh6hijpfvP0YJhfofUF0}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -26,7 +26,7 @@ spring:
 
 tripnest:
   jwt:
-    secret: 3cfa76e9f1a0e5c1d683a48e71b2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0
+    secret: ${JWT_SECRET:3cfa76e9f1a0e5c1d683a48e71b2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0}
     expirationMs: 86400000
     header: Authorization
     prefix: "Bearer "

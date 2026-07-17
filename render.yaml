@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: tripnest-backend
+    runtime: docker
+    rootDir: tripnest-backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: 8080
