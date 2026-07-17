@@ -6,14 +6,15 @@ spring:
     name: tripnest-backend
 
   datasource:
-    url: jdbc:mysql://localhost:3306/tripnest?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
-    username: root
-    password: admin
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://dpg-d9d1s758nd3s73cf9ku0-a.oregon-postgres.render.com:5432/tripnest_1rya
+    username: user
+    password: Ua8aTVsG08bjGh6hijpfvP0YJhfofUF0
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     properties:
       hibernate:
